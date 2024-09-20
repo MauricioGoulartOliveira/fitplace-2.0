@@ -1,7 +1,7 @@
 package com.fitplace.fitplace20.controller;
 
-import com.fitplace.fitplace20.model.User;  // Caminho correto
-import com.fitplace.fitplace20.service.UserService;  // Caminho correto
+import com.fitplace.fitplace20.model.User;
+import com.fitplace.fitplace20.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +44,14 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PostMapping("/auth/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        if (userService.getUserByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        User newUser = userService.createUser(user);
+        return ResponseEntity.ok(newUser);
+    }
+}
