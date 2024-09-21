@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic(); // Simplicidade no login, mas você pode implementar JWT aqui se preferir
+                .httpBasic();
 
         return http.build();
     }
