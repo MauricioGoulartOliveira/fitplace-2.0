@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -65,16 +66,43 @@ public class UserService {
 
     private boolean isValidCPF(String cpf) {
         // Lógica de validação de CPF
-        return true;
+
+        if (cpf == null || cpf.length() != 11) {
+            return false;
+        }
+        int[] cpfArray = new int[11];
+        for (int i = 0; i < 11; i++) {
+            cpfArray[i] = Character.getNumericValue(cpf.charAt(i));
+        }
+        int soma1 = 0;
+        int soma2 = 0;
+        for (int i = 0; i < 9; i++) {
+            soma1 += cpfArray[i] * (10 - i);
+            soma2 += cpfArray[i] * (11 - i);
+        }
+        int digito1 = (soma1 * 10) % 11;
+        int digito2 = (soma2 * 10) % 11;
+        if (digito1 == 10) {
+            digito1 = 0;
+        }
+        if (digito2 == 10) {
+            digito2 = 0;
+        }
+        return cpfArray[9] == digito1 && cpfArray[10] == digito2;
     }
 
     private boolean isValidEmail(String email) {
         // Lógica de validação de e-mail
-        return true;
+
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
     }
 
     private String fetchAddressFromViaCEP(String cpf) {
         // Simula a busca do endereço via API
+        // Fonte: https://viacep.com.br/
+        // Aqui você pode implementar a lógica para buscar o endereço via API
         return "Rua Exemplo, 123";
     }
 
@@ -86,4 +114,3 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 }
-
