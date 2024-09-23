@@ -1,7 +1,5 @@
 package com.fitplace.fitplace20.controller;
 
-
-
 import com.fitplace.fitplace20.model.Exercise;
 import com.fitplace.fitplace20.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
